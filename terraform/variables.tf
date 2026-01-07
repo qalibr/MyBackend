@@ -27,3 +27,8 @@ variable "location" {
   description = "The Azure region where all resources will be deployed."
   default     = "norwayeast"
 }
+
+variable "acr_name" {
+  type        = string
+  description = "The unique name of the Azure Container Registry."
+}

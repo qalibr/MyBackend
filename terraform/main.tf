@@ -25,11 +25,11 @@ resource "azurerm_resource_group" "rg" {
 
 # 2. Azure Container Registry
 resource "azurerm_container_registry" "acr" {
-  name                = "acrjorgedemo20250515" # Unique Name
+  name                = var.acr_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = var.location
-  sku                 = "Basic" # Student budget friendly
-  admin_enabled       = true    # For simple auth in this demo
+  sku                 = "Basic" # budget friendly
+  admin_enabled       = true    # For simple auth
 }
 
 # 3. Log Analytics
@@ -56,6 +56,12 @@ resource "azurerm_container_app" "app" {
   resource_group_name          = azurerm_resource_group.rg.name
   revision_mode                = "Single"
 
+  # Ignore changes to the image tag so CI/CD deployments 
+  # don't get reverted by Terraform runs
+  lifecycle {
+    ignore_changes = [template[0].container[0].image]
+  }
+
   registry {
     server               = azurerm_container_registry.acr.login_server
     username             = azurerm_container_registry.acr.admin_username
@@ -70,7 +76,7 @@ resource "azurerm_container_app" "app" {
   template {
     container {
       name   = "fastapi-container"
-      image  = "${azurerm_container_registry.acr.login_server}/fastapi-backend:initial" # Placeholder until first CI/CD run
+      image  = "${azurerm_container_registry.acr.login_server}/fastapi-backend:initial" # Placeholder image
       cpu    = 0.25
       memory = "0.5Gi"
       
@@ -84,7 +90,7 @@ resource "azurerm_container_app" "app" {
   ingress {
     allow_insecure_connections = false
     external_enabled           = true
-    target_port                = 8000 # This MUST match the port your Docker container exposes
+    target_port                = 8000
     traffic_weight {
       percentage = 100
       latest_revision = true

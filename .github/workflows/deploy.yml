@@ -45,7 +45,7 @@ jobs:
       - name: Deploy to Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          acrName: acrjorgedemo20250515
+          acrName: ${{ secrets.ACR_USERNAME }}
           containerAppName: app-fastapi-backend
           resourceGroup: rg-student-backend-norway
           imageToDeploy: ${{ secrets.ACR_LOGIN_SERVER }}/fastapi-backend:${{ github.sha }}
