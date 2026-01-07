@@ -54,7 +54,7 @@ resource "azurerm_container_app" "app" {
   name                         = "app-fastapi-backend"
   container_app_environment_id = azurerm_container_app_environment.env.id
   resource_group_name          = azurerm_resource_group.rg.name
-  revision_mode                = "Single"
+  revision_mode                = "Single" # Simplifying versioning
 
   # Ignore changes to the image tag so CI/CD deployments 
   # don't get reverted by Terraform runs
@@ -83,6 +83,25 @@ resource "azurerm_container_app" "app" {
       env {
         name  = "ENV_NAME"
         value = "Production"
+      }
+
+      # Liveness probe to check if the app is running.
+      # If this fails, Azure will restart the container.
+      liveness_probe {
+        transport = "HTTP"
+        path      = "/health"
+        port      = 8000
+        initial_delay = 20 # Give the app time to start
+        interval_seconds = 30
+      }
+
+      # Readiness probe to check if the app is ready for traffic.
+      # If this fails, Azure will not send traffic to this replica.
+      readiness_probe {
+        transport = "HTTP"
+        path      = "/health"
+        port      = 8000
+        interval_seconds = 10
       }
     }
   }
