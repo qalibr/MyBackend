@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+.git
+.gitignore
+.dockerignore
+Dockerfile
+.github/
+terraform/
+*.md
+notes.txt
+architecture_plan.md
+.env
+.env.*

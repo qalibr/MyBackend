@@ -1,0 +1,29 @@
+# Python virtual environment
+.venv/
+
+# Environment variables
+.env
+.env.*
+
+# Python Artifacts
+__pycache__/
+*.pyc
+
+# Terraform state and variables
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*.tfplan
+.terraform/
+
+# Personal notes
+notes.txt
+architecture_plan.md
+
+# IDE configuration
+.vscode/
+.idea/
+
+# OS-specific
+.DS_Store
+Thumbs.db
