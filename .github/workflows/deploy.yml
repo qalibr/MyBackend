@@ -30,7 +30,6 @@ jobs:
         with:
           context: .
           push: true
-          # Tag with the Commit SHA for versioning!
           tags: ${{ secrets.ACR_LOGIN_SERVER }}/fastapi-backend:${{ github.sha }}
 
   deploy:
@@ -45,7 +44,6 @@ jobs:
       - name: Deploy to Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          acrName: ${{ secrets.ACR_USERNAME }}
           containerAppName: app-fastapi-backend
           resourceGroup: rg-student-backend-norway
           imageToDeploy: ${{ secrets.ACR_LOGIN_SERVER }}/fastapi-backend:${{ github.sha }}
