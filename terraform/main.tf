@@ -106,11 +106,10 @@ resource "azurerm_container_app" "app" {
     }
 
     # This stops Azure leaving us with no containers (replicas) after inactivity.
-    # We were incurring ~1.5 NOK per day before this change.
-    scaling {
-      min_replicas = 1
-      max_replicas = 2 # Allow scaling up to 2 replicas under load
-    }
+    # We were incurring ~1.5 NOK per day before this change.    
+    # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/container_app
+    min_replicas = 1
+    # max_replicas = 2 # Allow scaling up to 2 replicas under load
   }
 
   ingress {
