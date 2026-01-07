@@ -70,7 +70,7 @@ resource "azurerm_container_app" "app" {
   template {
     container {
       name   = "fastapi-container"
-      image  = "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest" # Placeholder init image
+      image  = "${azurerm_container_registry.acr.login_server}/fastapi-backend:initial" # Placeholder until first CI/CD run
       cpu    = 0.25
       memory = "0.5Gi"
       
@@ -84,7 +84,7 @@ resource "azurerm_container_app" "app" {
   ingress {
     allow_insecure_connections = false
     external_enabled           = true
-    target_port                = 80 # Match the placeholder image's port
+    target_port                = 8000 # This MUST match the port your Docker container exposes
     traffic_weight {
       percentage = 100
       latest_revision = true
