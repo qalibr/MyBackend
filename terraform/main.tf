@@ -28,7 +28,7 @@ resource "azurerm_container_registry" "acr" {
   name                = var.acr_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = var.location
-  sku                 = "Basic" # budget friendly
+  sku                 = "Standard" # 'Basic' costs abt 1.67 NOK pr day, trying 'Standard'.
   admin_enabled       = true    # For simple auth
 }
 
@@ -108,7 +108,7 @@ resource "azurerm_container_app" "app" {
     # This stops Azure leaving us with no containers (replicas) after inactivity.
     # We were incurring ~1.5 NOK per day before this change.    
     # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/container_app
-    min_replicas = 1
+    min_replicas = 0 # cold starts, but free.
     # max_replicas = 2 # Allow scaling up to 2 replicas under load
   }
 
